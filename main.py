@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 
 app = FastAPI(title="API de tareas")
@@ -33,3 +34,7 @@ def borrar(id: int):
         raise HTTPException(status_code=404, detail="No existe")
     del tareas[id]
     return {"borrada": id}
+
+@app.get("/", response_class=HTMLResponse, include_in_schema=False)
+def web():
+    return open("index.html", encoding="utf-8").read()
